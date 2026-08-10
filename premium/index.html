@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Finger Frame Studio — Premium</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="stage-shell">
+      <header class="topbar">
+        <div><strong>FINGER FRAME</strong><span> / STUDIO</span></div>
+        <div id="topStatus" class="top-status"><i></i> READY</div>
+      </header>
+      <div class="stage" id="stage">
+        <canvas id="canvas"></canvas>
+        <div class="gesture-pill" id="gesturePill">SHOW BOTH HANDS</div>
+        <div class="recording" id="recordingBadge">● RECORDING</div>
+        <button class="exit-preview" id="exitPreview">EXIT PREVIEW · ESC</button>
+      </div>
+      <footer class="stage-footer">
+        <span>Finger Frame Studio V1</span>
+        <span id="metrics">0 FPS · no frame</span>
+      </footer>
+    </section>
+
+    <aside class="panel" id="panel">
+      <div class="eyebrow">INTERACTIVE MEDIA AUTHORING</div>
+      <h1>Finger Frame Studio</h1>
+      <p class="lede">Turn a two-hand gesture into a live moving screen.</p>
+
+      <section class="card">
+        <div class="card-title"><span>01 · INPUT</span><span id="inputState">NOT STARTED</span></div>
+        <div class="segmented">
+          <button class="seg active" data-input-mode="camera">LIVE CAMERA</button>
+          <button class="seg" data-input-mode="upload">UPLOAD VIDEO</button>
+        </div>
+        <button class="btn primary" id="startCamera">Start camera</button>
+        <label class="btn" for="gestureFile">Choose gesture video</label>
+        <input id="gestureFile" type="file" accept="video/*" />
+        <div class="asset" id="gestureAsset">No gesture video loaded.</div>
+        <div class="row checks">
+          <label><input id="mirrorInput" type="checkbox" checked /> Mirror input</label>
+          <label><input id="loopInput" type="checkbox" checked /> Loop</label>
+        </div>
+        <div class="row">
+          <button class="btn compact" id="inputPlay">Play</button>
+          <button class="btn compact" id="inputPause">Pause</button>
+          <button class="btn compact" id="inputRestart">Restart</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>02 · FRAME CONTENT</span><span id="contentState">EMPTY</span></div>
+        <div class="segmented content-tabs">
+          <button class="seg active" data-content-mode="upload">MEDIA</button>
+          <button class="seg" data-content-mode="screen">SCREEN</button>
+          <button class="seg" data-content-mode="url">URL</button>
+        </div>
+        <label class="btn primary" for="contentFile">Upload video / image</label>
+        <input id="contentFile" type="file" accept="video/*,image/*" />
+        <button class="btn primary hidden" id="shareScreen">Share screen</button>
+        <div id="urlBox" class="hidden">
+          <input class="text-input" id="contentUrl" placeholder="Direct MP4/WebM/image URL" />
+          <button class="btn primary" id="loadUrl">Load URL</button>
+        </div>
+        <div class="asset" id="contentAsset">No frame content loaded.</div>
+        <div class="field"><label>Fit <span id="fitValue">COVER</span></label>
+          <select id="contentFit"><option value="cover">Cover</option><option value="contain">Contain</option><option value="stretch">Stretch</option></select>
+        </div>
+        <div class="field"><label>Opacity <span id="opacityValue">1.00</span></label><input id="contentOpacity" type="range" min="0" max="1" step="0.01" value="1" /></div>
+        <div class="row checks">
+          <label><input id="contentLoop" type="checkbox" checked /> Loop</label>
+          <label><input id="contentMute" type="checkbox" checked /> Mute</label>
+        </div>
+        <div class="row">
+          <button class="btn compact" id="contentPlay">Play</button>
+          <button class="btn compact" id="contentPause">Pause</button>
+          <button class="btn compact" id="contentRestart">Restart</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>03 · FRAME LOOK</span><span id="frameState">AUTO</span></div>
+        <div class="field"><label>Border width <span id="borderValue">3px</span></label><input id="borderWidth" type="range" min="0" max="18" step="1" value="3" /></div>
+        <div class="field"><label>Corner size <span id="cornerValue">7px</span></label><input id="cornerSize" type="range" min="0" max="24" step="1" value="7" /></div>
+        <div class="field"><label>Glow <span id="glowValue">14px</span></label><input id="frameGlow" type="range" min="0" max="45" step="1" value="14" /></div>
+        <div class="field color-field"><label>Frame color</label><input id="frameColor" type="color" value="#f2cf64" /></div>
+        <div class="row checks">
+          <label><input id="showOutline" type="checkbox" checked /> Outline</label>
+          <label><input id="showCorners" type="checkbox" checked /> Corners</label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title"><span>04 · OUTPUT</span><span id="outputState">READY</span></div>
+        <button class="btn primary" id="previewClean">Preview clean</button>
+        <div class="field"><label>Recording FPS</label><select id="recordFps"><option value="30">30 FPS</option><option value="60">60 FPS</option></select></div>
+        <div class="row">
+          <button class="btn danger" id="recordVideo">Record</button>
+          <button class="btn" id="stopRecord">Stop & download</button>
+        </div>
+        <div class="row">
+          <button class="btn" id="downloadPng">PNG</button>
+          <button class="btn" id="saveSettings">Save settings</button>
+        </div>
+        <button class="btn" id="restoreSettings">Restore settings</button>
+        <div class="output-msg" id="outputMsg"></div>
+      </section>
+
+      <section class="card compact-card">
+        <div class="card-title"><span>GESTURE ENGINE</span><span>MEDIAPIPE</span></div>
+        <p>Two-hand tracking stays local in your browser. Frame content can be local media, screen share, or a compatible direct URL.</p>
+      </section>
+    </aside>
+  </main>
+
+  <video id="inputVideo" playsinline muted></video>
+  <video id="contentVideo" playsinline muted></video>
+  <img id="contentImage" alt="" />
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
